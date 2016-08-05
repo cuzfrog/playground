@@ -1,5 +1,5 @@
 organization := "com.github.cuzfrog"
-name := "xx"
+name := "sbt-template"
 version := Settings.version
 scalaVersion := Settings.scalaVersion
 
@@ -14,8 +14,5 @@ libraryDependencies ++= Seq(
   
 )
 
-
-// EclipseKeys.createSrc := EclipseCreateSrc.Default +
-// EclipseCreateSrc.ManagedClasses
-// EclipseKeys.withSource := true
-// EclipseKeys.withJavadoc := true
+publishTo := Some("My Bintray" at "https://api.bintray.com/maven/cuzfrog/maven/--PROJECT NAME--/;publish=1")
+credentials += Credentials("Bintray API Realm", "api.bintray.com", "BINTRAY_USER", "BINTRAY_PASS")
