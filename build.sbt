@@ -1,3 +1,10 @@
+shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
+
+resolvers ++= Seq(
+  "Local Maven Repository" at """file:///"""+Path.userHome.absolutePath+"""\.m2\repository""",
+  "bintray-cuzfrog-maven" at "http://dl.bintray.com/cuzfrog/maven"
+)
+
 organization := "com.github.cuzfrog"
 name := "sbt-template"
 version := Settings.version
@@ -5,10 +12,7 @@ scalaVersion := Settings.scalaVersion
 
 lazy val root = (project in file("."))
 
-resolvers ++= Seq(
-  "Local Maven Repository" at """file:///"""+Path.userHome.absolutePath+"""\.m2\repository""",
-  "bintray-cuzfrog-maven" at "http://dl.bintray.com/cuzfrog/maven"
-)
+
 
 libraryDependencies ++= Seq(
   
