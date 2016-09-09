@@ -1,3 +1,11 @@
+
+resolvers ++= Seq(
+  "Local Maven Repository" at """file:///""" + Path.userHome.absolutePath +"""\.m2\repository""",
+  "bintray-cuzfrog-maven" at "http://dl.bintray.com/cuzfrog/maven",
+  "Artima Maven Repository" at "http://repo.artima.com/releases",
+  "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
+  "spray repo" at "http://repo.spray.io"
+)
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
 
 lazy val commonSettings = Seq(
@@ -24,7 +32,19 @@ lazy val root = (project in file("."))
 
     ),
     publishTo := Some("My Bintray" at "https://api.bintray.com/maven/cuzfrog/maven/--PROJECT NAME--/;publish=1"),
-    credentials += Credentials("Bintray API Realm", "api.bintray.com", "BINTRAY_USER", "BINTRAY_PASS")
+    credentials += Credentials("Bintray API Realm", "api.bintray.com", "BINTRAY_USER", "BINTRAY_PASS"),
+    compile in Compile <<= (compile in Compile) dependsOn versionReadme,
+    versionReadme := {
+      val contents = IO.read(file("README.md"))
+      val regex ="""(?<=libraryDependencies \+= "com\.github\.cuzfrog" %% "maila" % ")[\d\w\-\.]+(?=")"""
+      val newContents = contents.replaceAll(regex, version.value)
+      IO.write(file("README.md"), newContents)
+    },
+    reColors := Seq("magenta")
   )
 
+lazy val generateBat = TaskKey[Unit]("generate-bat", "Generate a bat file for window shell.")
+lazy val copyApp = TaskKey[Unit]("copy-app", "Copy app files to target.")
+lazy val cleanAll = TaskKey[Unit]("clean-all", "Clean all files in target folders.")
+lazy val versionReadme = TaskKey[Unit]("version-readme", "Update version in README.MD")
 
