@@ -2,7 +2,7 @@ shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project
 
 lazy val commonSettings = Seq(
   resolvers ++= Seq(
-    "Local Maven Repository" at """file:///""" + Path.userHome.absolutePath +"""\.m2\repository""",
+    Resolver.mavenLocal,
     "bintray-cuzfrog-maven" at "http://dl.bintray.com/cuzfrog/maven",
     "Artima Maven Repository" at "http://repo.artima.com/releases",
     "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
