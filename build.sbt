@@ -11,6 +11,8 @@ lazy val commonSettings = Seq(
   organization := "com.github.cuzfrog",
   scalaVersion := "2.11.8",
   logBuffered in Test := false,
+  tstOptions += Tests.Argument(TestFrameworks.JUnit, "-v", "-q", "-a"),
+  parallelExecution in Test := false,
   scalacOptions ++= Seq("-unchecked", "-feature"),
   libraryDependencies ++= Seq(
     "ch.qos.logback" % "logback-classic" % "1.1.7" % "test",
