@@ -31,9 +31,12 @@ object Settings {
     licenses += ("Apache-2.0", url("https://opensource.org/licenses/Apache-2.0"))
   )
 
+  private val bintrayUser = System.getenv("BINTRAY_USER")
+  private val bintrayPass = System.getenv("BINTRAY_PASS")
+
   val publicationSettings = Seq(
     publishTo := Some("My Bintray" at s"https://api.bintray.com/maven/cuzfrog/maven/${(name in ThisProject).value}/;publish=1"),
-    credentials += Credentials("Bintray API Realm", "api.bintray.com", "BINTRAY_USER", "BINTRAY_PASS")
+    credentials += Credentials("Bintray API Realm", "api.bintray.com", bintrayUser, bintrayPass)
   )
 
   val readmeVersionSettings = Seq(
