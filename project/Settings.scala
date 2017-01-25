@@ -19,7 +19,8 @@ object Settings {
       "-deprecation",
       "-feature"),
     libraryDependencies ++= Seq(
-      "ch.qos.logback" % "logback-classic" % "1.1.7" % "provided",
+      "org.apache.logging.log4j" %% "log4j-api-scala" % "2.7",
+      "org.apache.logging.log4j" % "log4j-api" % "2.7",
       "junit" % "junit" % "4.12" % "test",
       "com.novocode" % "junit-interface" % "0.11" % "test->default",
       "org.scalacheck" %% "scalacheck" % "1.13.2" % "test",
@@ -32,7 +33,7 @@ object Settings {
   )
 
   val publicationSettings = Seq(
-    publishTo := Some("My Bintray" at s"https://api.bintray.com/maven/cuzfrog/maven/${(name in ThisProject).value}/;publish=1")
+    publishTo := Some("My Bintray" at s"https://api.bintray.com/maven/cuzfrog/maven/${(name in ThisProject).value }/;publish=1")
   )
 
   val readmeVersionSettings = Seq(
