@@ -6,7 +6,7 @@ object Settings {
   val commonSettings = Seq(
     resolvers ++= Seq(
       Resolver.mavenLocal,
-      "bintray-cuzfrog-maven" at "http://dl.bintray.com/cuzfrog/maven",
+      Resolver.bintrayRepo("cuzfrog","maven"),
       "Artima Maven Repository" at "http://repo.artima.com/releases",
       "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
       "spray repo" at "http://repo.spray.io"
@@ -33,15 +33,14 @@ object Settings {
   )
 
   val publicationSettings = Seq(
-    publishTo := Some("My Bintray" at s"https://api.bintray.com/maven/cuzfrog/maven/${(name in ThisProject).value }/;publish=1")
+    publishTo := Some("My Bintray" at s"https://api.bintray.com/maven/cuzfrog/maven/${name.value }/;publish=1")
   )
 
   val readmeVersionSettings = Seq(
     (compile in Compile) := ((compile in Compile) dependsOn versionReadme).value,
     versionReadme := {
       val contents = IO.read(file("README.md"))
-      val projectName = (name in ThisProject).value
-      val regex =s"""(?<=libraryDependencies \+= "com\.github\.cuzfrog" %% "$projectName" % ")[\d\w\-\.]+(?=")"""
+      val regex =raw"""(?<=libraryDependencies \+= "com\.github\.cuzfrog" %% "${name.value}" % ")[\d\w\-\.]+(?=")"""
       val newContents = contents.replaceAll(regex, version.value)
       IO.write(file("README.md"), newContents)
     }
