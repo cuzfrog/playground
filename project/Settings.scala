@@ -3,29 +3,39 @@ import sbt._
 import MyTasks._
 
 object Settings {
+
+  private val loggingDependencies = Seq(
+    "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
+    "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.8.2" % "provided",
+    "org.apache.logging.log4j" % "log4j-api" % "2.8.2" % "provided",
+    "org.apache.logging.log4j" % "log4j-core" % "2.8.2" % "provided"
+  )
+
   val commonSettings = Seq(
     resolvers ++= Seq(
       Resolver.mavenLocal,
-      Resolver.bintrayRepo("cuzfrog","maven"),
+      Resolver.bintrayRepo("cuzfrog", "maven"),
       "Artima Maven Repository" at "http://repo.artima.com/releases",
       "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
       "spray repo" at "http://repo.spray.io"
     ),
     organization := "com.github.cuzfrog",
-    scalaVersion := "2.11.8",
+    scalaVersion := "2.12.2",
+    crossScalaVersions := Seq("2.11.11", "2.12.2"),
     scalacOptions ++= Seq(
       "-Xlint",
       "-unchecked",
       "-deprecation",
-      "-feature"),
+      "-feature",
+      "-language:postfixOps",
+      "-language:implicitConversions",
+      "-language:higherKinds",
+      "-language:existentials"),
     libraryDependencies ++= Seq(
-      "org.apache.logging.log4j" %% "log4j-api-scala" % "2.7",
-      "org.apache.logging.log4j" % "log4j-api" % "2.7",
       "junit" % "junit" % "4.12" % "test",
-      "com.novocode" % "junit-interface" % "0.11" % "test->default",
-      "org.scalacheck" %% "scalacheck" % "1.13.2" % "test",
-      "org.mockito" % "mockito-core" % "1.10.19" % "test"
+      "com.novocode" % "junit-interface" % "0.11" % "test->default"
     ),
+    libraryDependencies ++= loggingDependencies,
     logBuffered in Test := false,
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-v", "-q", "-a"),
     parallelExecution in Test := false,
@@ -33,7 +43,7 @@ object Settings {
   )
 
   val publicationSettings = Seq(
-    publishTo := Some("My Bintray" at s"https://api.bintray.com/maven/cuzfrog/maven/${name.value }/;publish=1")
+    publishTo := Some("My Bintray" at s"https://api.bintray.com/maven/cuzfrog/maven/${name.value}/;publish=1")
   )
 
   val readmeVersionSettings = Seq(

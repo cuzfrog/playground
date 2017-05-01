@@ -11,7 +11,7 @@ lazy val root = (project in file("."))
     name := "sbt-template",
     version := "0.0.1",
     libraryDependencies ++= Seq(
-      "org.apache.logging.log4j" % "log4j-core" % "2.7" % "provided"
+
     ),
     reColors := Seq("magenta")
   )
