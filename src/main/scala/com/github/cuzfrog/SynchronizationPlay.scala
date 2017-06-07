@@ -5,7 +5,7 @@ import scala.concurrent.duration._
 /**
   * Created by cuz on 6/7/17.
   */
-private[cuzfrog] object SynchronizationPlay extends App {
+private[cuzfrog] object SynchronizationPlay{
 
   import scala.concurrent.ExecutionContext.Implicits.global
 

@@ -16,8 +16,9 @@ lazy val root = (project in file("."))
     version := "0.0.1",
     libraryDependencies ++= Seq(
       "org.openjdk.jol" % "jol-core" % "0.8"
-    )
-  )
+    ),
+    javaAgents += "com.github.jbellis" % "jamm" % "0.3.1" % "compile;runtime"
+  ).enablePlugins(JavaAgent)
 
 lazy val withLib = (project in file("./with-lib"))
   .settings(commonSettings)

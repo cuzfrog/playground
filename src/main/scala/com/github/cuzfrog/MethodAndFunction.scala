@@ -6,7 +6,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 /**
   * Created by cuz on 6/6/17.
   */
-private[cuzfrog] object MethodAndFunction extends App {
+private[cuzfrog] object MethodAndFunction {
 
   def m(in: Long): Long = in + 1
 
@@ -26,5 +26,4 @@ private[cuzfrog] object MethodAndFunction extends App {
     println(time2 - time1 + "ns")
   }
 
-  Numeric
 }
