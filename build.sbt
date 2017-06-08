@@ -6,26 +6,39 @@ onLoad in Global := (onLoad in Global).value andThen (Command.process(s"", _))
 
 inThisBuild(Seq(
   scalaOrganization := "org.typelevel",
-  scalaVersion := "2.12.2-bin-typelevel-4"
+  scalaVersion := "2.12.2-bin-typelevel-4",
+  version := "0.0.1"
 ))
 
 lazy val root = (project in file("."))
   .settings(commonSettings)
   .settings(
     name := "scala-playground",
-    version := "0.0.1",
     libraryDependencies ++= Seq(
       "org.openjdk.jol" % "jol-core" % "0.8"
     ),
     javaAgents += "com.github.jbellis" % "jamm" % "0.3.1" % "compile;runtime"
   ).enablePlugins(JavaAgent)
 
-lazy val withLib = (project in file("./with-lib"))
+lazy val withCats = (project in file("./with-cats"))
   .settings(commonSettings)
   .settings(
-    name := "scala-playground-with-libs",
-    version := "0.0.1",
+    name := "scala-playground-with-cats",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats" % "0.9.0"
     )
+  )
+
+val scalazVersion = "7.2.13"
+lazy val withScalaz = (project in file("./with-scalaz"))
+  .settings(commonSettings)
+  .settings(
+    name := "scala-playground-with-scalaz",
+    libraryDependencies ++= Seq(
+      "org.scalaz" %% "scalaz-core" % scalazVersion,
+      "org.scalaz" %% "scalaz-effect" % scalazVersion,
+      //"org.scalaz" %% "scalaz-typelevel" % scalazVersion,
+      "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
+    ),
+    initialCommands in console := "import scalaz._, Scalaz._"
   )
