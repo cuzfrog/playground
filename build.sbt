@@ -17,6 +17,9 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.openjdk.jol" % "jol-core" % "0.8"
     ),
+    libraryDependencies ++= Seq(
+      "com.twitter" %% "scrooge-core" % "4.16.0"
+    ),
     javaAgents += "com.github.jbellis" % "jamm" % "0.3.1" % "compile;runtime"
   ).enablePlugins(JavaAgent)
 
