@@ -2,7 +2,7 @@ package com.github.cuzfrog
 
 import java.awt.Color
 
-object GenericPolymor extends App {
+object GenericPolymor {
 
 
   trait Pet[A] {

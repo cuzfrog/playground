@@ -22,17 +22,20 @@ object Settings {
       "spray repo" at "http://repo.spray.io"
     ),
     organization := "com.github.cuzfrog",
-    scalaVersion := "2.12.2",
+    //scalaVersion := "2.12.2",
     crossScalaVersions := Seq("2.11.11", "2.12.2"),
     scalacOptions ++= Seq(
       "-Xlint",
       "-unchecked",
       "-deprecation",
+      "-explaintypes",
       "-feature",
       "-language:postfixOps",
       "-language:implicitConversions",
       "-language:higherKinds",
-      "-language:existentials"),
+      "-language:existentials",
+      "-Ywarn-dead-code"),
+    scalacOptions ++= ScalacOptions.tlsOption,
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "utest" % "0.4.7" % "test"
     ),
