@@ -11,6 +11,8 @@ object Settings {
     "org.apache.logging.log4j" % "log4j-core" % "2.8.2" % "provided"
   )
 
+
+
   val commonSettings = Seq(
     resolvers ++= Seq(
       Resolver.mavenLocal,

@@ -1,9 +1,11 @@
 package com.github.cuzfrog
 
-import org.junit._
-import org.junit.Assert._
-import org.hamcrest.CoreMatchers._
+import utest._
 
-class TemplateTest {
-  
+object TemplateTest extends TestSuite{
+  val tests = this{
+    'test1{
+      eventually()
+    }
+  }
 }
