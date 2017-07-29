@@ -25,7 +25,7 @@ object Settings {
     //scalaVersion := "2.12.2",
     crossScalaVersions := Seq("2.11.11", "2.12.2"),
     scalacOptions ++= Seq(
-      "-Xlint",
+      //"-Xlint",
       "-unchecked",
       "-deprecation",
       "-explaintypes",
@@ -35,7 +35,7 @@ object Settings {
       "-language:higherKinds",
       "-language:existentials",
       "-Ywarn-dead-code"),
-    scalacOptions ++= ScalacOptions.tlsOption,
+    //scalacOptions ++= ScalacOptions.tlsOption,
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "utest" % "0.4.7" % "test"
     ),
