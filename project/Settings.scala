@@ -11,6 +11,8 @@ object Settings {
     "org.apache.logging.log4j" % "log4j-core" % "2.8.2" % "provided"
   )
 
+
+
   val commonSettings = Seq(
     resolvers ++= Seq(
       Resolver.mavenLocal,
@@ -23,7 +25,7 @@ object Settings {
     //scalaVersion := "2.12.2",
     crossScalaVersions := Seq("2.11.11", "2.12.2"),
     scalacOptions ++= Seq(
-      "-Xlint",
+      //"-Xlint",
       "-unchecked",
       "-deprecation",
       "-explaintypes",
@@ -33,7 +35,7 @@ object Settings {
       "-language:higherKinds",
       "-language:existentials",
       "-Ywarn-dead-code"),
-    scalacOptions ++= ScalacOptions.tlsOption,
+    //scalacOptions ++= ScalacOptions.tlsOption,
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "utest" % "0.4.7" % "test"
     ),
