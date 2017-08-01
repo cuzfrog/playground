@@ -23,17 +23,16 @@ object AdHocSubclassCheck extends App {
 
   trait Prime
   class NotSuper
-  class Super
-  class Sub extends Super with Prime
+  class Super extends Prime
+  class Sub extends Super
   class NotSub
 
-  import Implicits._
-
-  (new Sub).isSubclassOf[NotSuper]
-  (new Sub).isSubclassOf[Super]
-  (new Sub).isSubclassOf[Prime]
-  (new Super).isSubclassOf[Prime]
-  (new Super).isSubclassOf[Sub]
-  (new NotSub).isSubclassOf[Super]
+import Implicits._
+(new Sub).isSubclassOf[NotSuper]
+(new Sub).isSubclassOf[Super]
+(new Sub).isSubclassOf[Prime]
+(new Super).isSubclassOf[Prime]
+(new Super).isSubclassOf[Sub]
+(new NotSub).isSubclassOf[Super]
 
 }
