@@ -7,7 +7,7 @@ onLoad in Global := (onLoad in Global).value andThen (Command.process(s"", _))
 inThisBuild(Seq(
   //scalaOrganization := "org.typelevel",
   //scalaVersion := "2.12.2-bin-typelevel-4",
-  scalaVersion := "2.12.2",
+  scalaVersion := "2.12.3",
   version := "0.0.1"
 ))
 

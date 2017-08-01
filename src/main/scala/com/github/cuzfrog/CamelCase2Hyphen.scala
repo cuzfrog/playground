@@ -11,8 +11,8 @@ object CamelCase2Hyphen extends App {
         Seq('-', char.toLower)
       }
       else {
-        lastUpper = false
-        Seq(char)
+        if (char.isLower) lastUpper = false
+        Seq(char.toLower)
       }
     }
   }
