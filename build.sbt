@@ -48,3 +48,18 @@ lazy val withScalaz = (project in file("./with-scalaz"))
     reColors := Seq("magenta"),
     initialCommands in console := "import scalaz._, Scalaz._"
   )
+
+val macroAnnotationSettings = Seq(
+  addCompilerPlugin("org.scalameta" % "paradise" % "3.0.0-M10" cross CrossVersion.full),
+  scalacOptions += "-Xplugin-require:macroparadise",
+  scalacOptions in(Compile, console) ~= (_ filterNot (_ contains "paradise")),
+  libraryDependencies += "org.scalameta" %% "scalameta" % "1.8.0" % Provided
+)
+val libraryTest = project
+  .settings(macroAnnotationSettings: _*)
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.github.cuzfrog" %% "scmd" % "0.1.0"
+    )
+  )
+

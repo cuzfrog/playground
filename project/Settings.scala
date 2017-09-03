@@ -37,6 +37,7 @@ object Settings {
       "-Ywarn-dead-code"),
     //scalacOptions ++= ScalacOptions.tlsOption,
     libraryDependencies ++= Seq(
+      "org.scalacheck" %% "scalacheck" % "1.13.4" % Test,
       "com.lihaoyi" %% "utest" % "0.4.7" % "test"
     ),
     libraryDependencies ++= loggingDependencies,
