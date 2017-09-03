@@ -20,6 +20,8 @@ object AdHocOverloading extends App {
   //Some(3)
   println(confident.value)
   //C
+
+
 }
 
 trait UnboxEv[+T, -B, +R] {
@@ -28,8 +30,7 @@ trait UnboxEv[+T, -B, +R] {
 
 trait Confidence
 case class Box[+T](v: Option[T])
-trait LowLevelImplicitOfBox {
-  this: Box.type =>
+trait LowLevelImplicitOfBox { this: Box.type =>
   implicit def optionEvidence[T]: UnboxEv[T, Box[T], Option[T]] =
     new UnboxEv[T, Box[T], Option[T]] {
       override def unbox(b: Box[T]): Option[T] = b.v
