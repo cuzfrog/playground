@@ -2,7 +2,12 @@ import sbt.Keys._
 import Settings._
 
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
-onLoad in Global := (onLoad in Global).value andThen (Command.process(s"", _))
+onLoad in Global := {
+  val insertCommand: State => State =
+    (state: State) =>
+      state.copy(remainingCommands = Exec("", None) +: state.remainingCommands)
+  (onLoad in Global).value andThen insertCommand
+}
 
 inThisBuild(Seq(
   //scalaOrganization := "org.typelevel",
@@ -45,7 +50,6 @@ lazy val withScalaz = (project in file("./with-scalaz"))
       "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
     ),
     libraryDependencies ++= Dependencies.monocle,
-    reColors := Seq("magenta"),
     initialCommands in console := "import scalaz._, Scalaz._"
   )
 
