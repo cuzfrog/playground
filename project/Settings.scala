@@ -5,29 +5,21 @@ import MyTasks._
 object Settings {
   val commonSettings = Seq(
     resolvers ++= Seq(
-      Resolver.mavenLocal,
-      Resolver.bintrayRepo("cuzfrog","maven"),
-      "Artima Maven Repository" at "http://repo.artima.com/releases",
-      "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
-      "spray repo" at "http://repo.spray.io"
+      Resolver.bintrayRepo("cuzfrog","maven")
     ),
     organization := "com.github.cuzfrog",
-    scalaVersion := "2.11.8",
     scalacOptions ++= Seq(
       "-Xlint",
       "-unchecked",
       "-deprecation",
       "-feature"),
     libraryDependencies ++= Seq(
-      "org.apache.logging.log4j" %% "log4j-api-scala" % "2.7",
-      "org.apache.logging.log4j" % "log4j-api" % "2.7",
-      "junit" % "junit" % "4.12" % "test",
-      "com.novocode" % "junit-interface" % "0.11" % "test->default",
-      "org.scalacheck" %% "scalacheck" % "1.13.2" % "test",
-      "org.mockito" % "mockito-core" % "1.10.19" % "test"
+      "com.lihaoyi" %% "utest" % "0.5.4" % "test",
+      "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
+      "org.mockito" % "mockito-core" % "2.11.0" % "test"
     ),
+    testFrameworks += new TestFramework("utest.runner.Framework"),
     logBuffered in Test := false,
-    testOptions += Tests.Argument(TestFrameworks.JUnit, "-v", "-q", "-a"),
     parallelExecution in Test := false,
     licenses += ("Apache-2.0", url("https://opensource.org/licenses/Apache-2.0"))
   )
