@@ -67,3 +67,14 @@ val libraryTest = project
     )
   )
 
+lazy val macros = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value
+    )
+  )
+
+lazy val `macro-test` = project.dependsOn(macros)
+  .settings(
+
+  )
