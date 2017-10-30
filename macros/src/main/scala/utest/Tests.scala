@@ -3,6 +3,7 @@ package utest
 import utest.framework.{TestCallTree, Tree}
 
 import scala.collection.mutable
+import scala.collection.immutable
 import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
 
@@ -45,13 +46,18 @@ object Tests{
         case q"""$p($value).-($body)""" if checkLhs(p) => (Some(literalValue(value)), body)
       }
 
-      def extractAutoCloseable(normalExprs: List[c.Tree]): List[c.Tree] = {
+      def extractAutoCloseable(normalExprs: immutable.List[c.Tree]): immutable.List[c.Tree] = {
         normalExprs.collect{
-          case q"$mods val $name = autoClose($body)" => name
+          case q"$mods val $name = utest.`package`.autoClose[$tpe]($body)" =>
+            q"""try{$name.close()}catch{
+               case e: Exception=> //scala.util.control.NonFatal should be used
+               case e => throw e
+            }"""
         }
       }
 
-      def recurse(t: c.Tree, path: Seq[String]): (c.Tree, Seq[c.Tree]) = {
+      def recurse(t: c.Tree, path: Seq[String],
+                  clearHook: immutable.List[c.Tree] = List.empty): (c.Tree, Seq[c.Tree]) = {
         val b = t match{
           case b: Block => b
           case _t => Block(Nil, _t)
@@ -79,11 +85,13 @@ object Tests{
           }else{
             (normal.init, normal.last)
           }
-        val normal2Autocloseable = extractAutoCloseable(normal2)
+        val normal2AutoCloseable = extractAutoCloseable(normal2)
         println("Normal2----")
         normal2.foreach(println)
-        println("Autocloseable------")
-        normal2Autocloseable.foreach(t => println(t))
+        println("Last-----")
+        println(last)
+        println("AutoCloseable------")
+        normal2AutoCloseable.foreach(t => println(t))
 
         val (names, bodies) = {
           var index = 0
@@ -105,23 +113,29 @@ object Tests{
 
         val (childCallTrees, childNameTrees) =
           names.zip(bodies)
-            .map{case (name, body) => recurse(body, path :+ name)}
+            .map{case (name, body) => recurse(body, path :+ name, normal2AutoCloseable)}
             .unzip
+        println(s"childCallTree length: ${childCallTrees.length}")
+
 
         val nameTree = names.zip(childNameTrees).map{
           case (name, suite) => q"_root_.utest.framework.Tree($name, ..$suite)"
         }
 
-        val callTree = q"""
+        println("last raw:")
+        println(showRaw(c.typecheck(last)))
+        println(showRaw(c.Expr(q"println(resource)")))
+
+
+        val callTree = c.untypecheck(q"""
         new _root_.utest.framework.TestCallTree({
           ..$normal2
           ${
-          if (childCallTrees.isEmpty) q"_root_.scala.Left($last)"
+          if (childCallTrees.isEmpty) q"_root_.scala.Left(( ()=>$last,()=>{..${clearHook}} ))"
           else q"$last; _root_.scala.Right(Array(..$childCallTrees))"
         }
-        })
-      """
-
+        })""")
+        println(showCode(callTree))
         (callTree, nameTree)
       }
 

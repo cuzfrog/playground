@@ -1,11 +1,13 @@
 package utest.framework
 
+import scala.concurrent.{ExecutionContext, Future}
+
 /**
  * An immutable tree with each node containing a value, and a `Seq` of
  * children. Provides all normal `Seq` functionality as well as some tree
  * specific methods.
  */
-case class Tree[+T](value: T, children: Tree[T]*){
+case class Tree[+T](value: T, children: Tree[T]*) {
   /**
    * The number of nodes in this tree.
    */
@@ -14,7 +16,7 @@ case class Tree[+T](value: T, children: Tree[T]*){
   }
 
   def map[V](f: T => V): Tree[V] = {
-    Tree(f(value), children.map(_.map(f)):_*)
+    Tree(f(value), children.map(_.map(f)): _*)
   }
   /**
    * An iterator over the values stored on the nodes of this tree, in a depth
@@ -40,25 +42,32 @@ case class Tree[+T](value: T, children: Tree[T]*){
 
 }
 
-
 /**
  * The executable portion of a tree of tests. Each node contains an
  * executable, which when run either returns a Left(result) or a
  * Right(sequence) of child nodes which you can execute.
  */
-class TestCallTree(inner: => Either[Any, IndexedSeq[TestCallTree]]){
+class TestCallTree(inner: => Either[(() => Any, () => Unit), IndexedSeq[TestCallTree]]) {
   /**
    * Runs the test in this [[TestCallTree]] at the specified `path`. Called
    * by the [[TestTreeSeq.run]] method and usually not called manually.
    */
-  def run(path: List[Int]): Any = {
+  def run(path: List[Int])(implicit executionContext: ExecutionContext): Any = {
     path match {
       case head :: tail =>
         val Right(children) = inner
         children(head).run(tail)
       case Nil =>
-        val Left(res) = inner
-        res
+        val Left((res, hook)) = inner
+        try {
+          val resFuture = res() match {
+            case x: Future[_] => x
+            case notFuture => Future.successful(notFuture)
+          }
+          resFuture.map { r => hook(); r }
+        } catch {
+          case scala.util.control.NonFatal(e) => hook(); throw e
+        }
     }
   }
 }
