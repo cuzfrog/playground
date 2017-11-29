@@ -9,12 +9,11 @@ object Settings {
     ),
     organization := "com.github.cuzfrog",
     scalacOptions ++= Seq(
-      "-Xlint",
       "-unchecked",
       "-deprecation",
       "-feature"),
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "utest" % "0.5.4" % "test",
+      "com.lihaoyi" %% "utest" % "0.6.0" % "test",
       "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
       "org.mockito" % "mockito-core" % "2.11.0" % "test"
     ),

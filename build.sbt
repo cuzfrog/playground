@@ -13,6 +13,5 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
       "ch.qos.logback" % "logback-classic" % "1.2.3" % "provided"
-    ),
-    reColors := Seq("magenta")
+    )
   )
